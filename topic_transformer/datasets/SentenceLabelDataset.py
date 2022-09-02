@@ -18,7 +18,7 @@ class SentenceLabelDataset(Dataset):
         self.labels = []
         for doc in range(len(train_docs)):
             probabilities = [b for (a, b) in lda_model.get_document_topics(corpus[doc], minimum_probability=1e-5)]
-            if len(probabilities) < 15:
+            if len(probabilities) < self.num_topics:
                 continue
             self.labels.append(probabilities)
 
