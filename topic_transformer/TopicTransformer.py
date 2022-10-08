@@ -2,6 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
+from typing import List, Tuple, Union
 
 class TopicTransformer(nn.Module):
     def __init__(self,
@@ -13,7 +14,7 @@ class TopicTransformer(nn.Module):
 
         if transformer_model == None and transformer_model_name == None:
             print("ERROR : Cannot Load Transformer Model")
-            return -1
+            return None
         if transformer_model != None:
             self.tokenizer = AutoTokenizer.from_pretrained(transformer_model.config._name_or_path)
             self.transformer_model = transformer_model
@@ -28,8 +29,8 @@ class TopicTransformer(nn.Module):
         self.head_layer = nn.Linear(self.hidden_dim, self.output_dim)
 
     def forward(self,
-                input_x,
-                device='cuda:0'):
+                input_x: Union[List, Tuple],
+                device: str='cuda:0'):
 
         # Non-Tokenized Input
         if type(input_x) == list or type(input_x) == tuple:
