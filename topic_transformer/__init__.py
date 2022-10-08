@@ -1,1 +1,3 @@
 from .TopicTransformer import TopicTransformer
+from .TopicTransformer_MLP import TopicTransformer_MLP
+from .TopicTransformer_LSTM import TopicTransformer_LSTM
