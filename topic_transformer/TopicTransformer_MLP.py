@@ -14,13 +14,13 @@ class TopicTransformer_MLP(nn.Module):
                  max_length: int=128):
         super(TopicTransformer_MLP, self).__init__()
 
-        if head_hidden_dims != num_head_layers:
+        if len(head_hidden_dims) != num_head_layers:
             print("ERROR : Length of head_hidden_dims must be equal to num_head_layers")
-            return -1
+            return None
 
         if transformer_model == None and transformer_model_name == None:
             print("ERROR : Cannot Load Transformer Model")
-            return -1
+            return None
         if transformer_model != None:
             self.tokenizer = AutoTokenizer.from_pretrained(transformer_model.config._name_or_path)
             self.transformer_model = transformer_model
@@ -32,7 +32,7 @@ class TopicTransformer_MLP(nn.Module):
         self.output_dim = output_dim
         self.max_length = max_length
 
-        self.head_layers = []
+        self.head_layers = nn.ModuleList()
         if num_head_layers == 0:
             self.head_layers.append(nn.Linear(self.hidden_dim, self.output_dim))
         else:
@@ -63,9 +63,9 @@ class TopicTransformer_MLP(nn.Module):
         x = (x * pooling_mask).sum(1) / sum_mask
 
         # Topic Head
-        for head_layer in self.head_layers:
+        for i in range(len(self.head_layers)):
             x = F.relu(x)
-            x = head_layer(x)
+            x = self.head_layers[i](x)
 
         return F.softmax(x, dim=1)
 
