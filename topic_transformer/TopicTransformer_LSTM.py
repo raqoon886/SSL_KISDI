@@ -9,7 +9,7 @@ class TopicTransformer_LSTM(nn.Module):
                  output_dim: int,
                  transformer_model_name: str,
                  lstm_num_layers: int=2,
-                 lstm_hidden_size: int=256,
+                 lstm_hidden_size: int=512,
                  transformer_model=None,
                  max_length: int=128):
         super(TopicTransformer_LSTM, self).__init__()
@@ -29,7 +29,8 @@ class TopicTransformer_LSTM(nn.Module):
         self.max_length = max_length
 
         self.lstm = nn.LSTM(input_size=self.hidden_dim, num_layers=lstm_num_layers, hidden_size=lstm_hidden_size)
-        self.fc = nn.Linear(lstm_hidden_size, self.output_dim)
+        self.fc1 = nn.Linear(lstm_hidden_size, 256)
+        self.fc2 = nn.Linear(256, self.output_dim)
 
     def forward(self,
                 input_x: Union[List, Tuple],
@@ -48,7 +49,9 @@ class TopicTransformer_LSTM(nn.Module):
         # Topic Head
         x = self.lstm(x)[0][:, -1, :] # last hidden state
         x = F.relu(x)
-        x = self.fc(x)
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = self.fc2(x)
 
         return F.softmax(x, dim=1)
 
