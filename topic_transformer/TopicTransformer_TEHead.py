@@ -63,4 +63,5 @@ class TopicTransformer_TEHead(nn.Module):
         x = self.head_layer(x)
         
         return F.softmax(x, dim=1)
-    
+    def loss(self, pred, label):
+        return F.mse_loss(pred, label)
