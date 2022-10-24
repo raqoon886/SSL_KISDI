@@ -146,7 +146,7 @@ def main():
                 pred_dic = {i: a for i, a in enumerate(pred)}
                 pred_sorted = sorted(pred_dic.items(), key=lambda x: x[1], reverse=True)
                 for idx, (i, a) in enumerate(pred_sorted[:5]):
-                    print("Topic Top {} probability: {:.4f}".format(idx+1, a))
+                    print("Top {} Topic Probability: {:.4f}".format(idx+1, a))
                     print(ldamodel.print_topic(i))
 
                 print("End of Inference\n")
