@@ -145,9 +145,10 @@ def main():
                 pred = pred.to('cpu')[0].tolist()
                 pred_dic = {i: a for i, a in enumerate(pred)}
                 pred_sorted = sorted(pred_dic.items(), key=lambda x: x[1], reverse=True)
+                print()
                 for idx, (topic_num, prob) in enumerate(pred_sorted[:5]):
-                    print("Top {} Topic Probability: {:2.2f}, Topic Num: {}".format(idx+1, prob*100, topic_num))
-                    print(ldamodel.print_topic(idx))
+                    print("Top {} Topic Probability: {:2.2f}%, Topic Num: {}".format(idx+1, prob*100, topic_num))
+                    print(ldamodel.print_topic(idx)+'\n')
 
                 print("End of Inference\n")
                 torch.cuda.empty_cache()
