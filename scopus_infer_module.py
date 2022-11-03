@@ -148,7 +148,7 @@ def main():
                 print()
                 for idx, (topic_num, prob) in enumerate(pred_sorted[:5]):
                     print("Top {} Topic Probability: {:2.2f}%, Topic Num: {}".format(idx+1, prob*100, topic_num))
-                    print(ldamodel.print_topic(idx)+'\n')
+                    print(ldamodel.print_topic(topic_num)+'\n')
 
                 print("End of Inference\n")
                 torch.cuda.empty_cache()
